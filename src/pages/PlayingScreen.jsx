@@ -70,9 +70,9 @@ export default function PlayingScreen({ question, questionIndex, totalQuestions,
 
               }
             </div>
-            <p className="mt-3 text-sm font-semibold hidden" style={{ color: 'rgba(255,255,255,0.55)' }}>
-              💡 {question.hint}
-            </p>
+            
+
+            
           </div>
 
           {/* RIGHT — Combined Color Picker */}
