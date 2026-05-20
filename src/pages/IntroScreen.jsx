@@ -27,7 +27,7 @@ export default function IntroScreen({ onStart }) {
 
           
           <p className="text-lg" style={{ color: 'rgba(255,255,255,0.65)' }}>
-            Hãy khớp màu sắc chính xác của các nhân vật hoạt hình yêu thích bằng cách điều chỉnh thanh Hue, Saturation & Brightness.
+            Hãy điều chỉnh màu sắc chính xác của các nhân vật bằng cách điều chỉnh thanh màu sắc, độ đậm, độ sáng
           </p>
         </div>
 
