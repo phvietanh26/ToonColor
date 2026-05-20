@@ -42,7 +42,7 @@ export default function IntroScreen({ onStart }) {
           <RuleCard
             icon={<Palette className="w-5 h-5" style={{ color: '#23B9A4' }} />}
             title="Điều chỉnh thanh màu sắc"
-            desc="Kéo Hue, Saturation & Brightness để khớp với màu gốc."
+            desc="Kéo thanh màu sắc và độ đậm, độ chói để khớp với màu gốc"
             bg="rgba(35,185,164,0.12)" />
           
           <RuleCard
