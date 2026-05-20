@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import HSBSlider from '@/components/game/HSBSlider';
-import ColorPreview from '@/components/game/ColorPreview';
 import ProgressBar from '@/components/game/ProgressBar';
-import { CheckCircle } from 'lucide-react';
+import CombinedColorPicker from '@/components/game/CombinedColorPicker';
+
 
 export default function PlayingScreen({ question, questionIndex, totalQuestions, onConfirm }) {
   const [hsb, setHsb] = useState({ h: 180, s: 50, b: 80 });
@@ -76,38 +75,15 @@ export default function PlayingScreen({ question, questionIndex, totalQuestions,
             </p>
           </div>
 
-          {/* RIGHT — Color Picker */}
-          <div className="flex flex-col gap-6">
-            {/* Preview */}
-            <div className="rounded-3xl p-6 border"
-              style={{ backgroundColor: 'rgba(255,255,255,0.06)', borderColor: 'rgba(255,255,255,0.1)', boxShadow: '0 4px 24px rgba(0,0,0,0.3)' }}>
-              <ColorPreview hsb={hsb} label="Màu của bạn" size="lg" />
-            </div>
-
-            {/* Sliders */}
-            <div className="rounded-3xl p-6 border"
-              style={{ backgroundColor: 'rgba(255,255,255,0.06)', borderColor: 'rgba(255,255,255,0.1)', boxShadow: '0 4px 24px rgba(0,0,0,0.3)' }}>
-              <h3 className="font-bold text-sm mb-5 uppercase tracking-wider"
-                style={{ color: 'rgba(255,255,255,0.5)' }}>
-                Điều chỉnh màu sắc
-              </h3>
-              <HSBSlider hsb={hsb} onChange={setHsb} />
-            </div>
-
-            {/* Confirm button */}
-            <button
-              onClick={handleConfirm}
-              className="w-full py-4 font-bold text-base text-white rounded-pill flex items-center justify-center gap-2 transition-all duration-150 hover:-translate-y-0.5 active:scale-95"
-              style={{
-                backgroundColor: 'var(--color-primary)',
-                transitionTimingFunction: 'cubic-bezier(0.47, 0, 0.745, 0.715)',
-              }}
-              onMouseEnter={e => e.currentTarget.style.backgroundColor = 'var(--color-primary-dark)'}
-              onMouseLeave={e => e.currentTarget.style.backgroundColor = 'var(--color-primary)'}
-            >
-              <CheckCircle className="w-5 h-5" />
-              Xác nhận màu
-            </button>
+          {/* RIGHT — Combined Color Picker */}
+          <div className="flex flex-col justify-center">
+            <CombinedColorPicker
+              hsb={hsb}
+              onChange={setHsb}
+              questionIndex={questionIndex}
+              totalQuestions={totalQuestions}
+              onConfirm={handleConfirm}
+            />
           </div>
         </div>
       </div>
