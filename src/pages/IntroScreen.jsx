@@ -23,9 +23,9 @@ export default function IntroScreen({ onStart }) {
               ToonColor
             </span>
           </div>
-          <h1 className="text-4xl font-extrabold mb-3 hidden" style={{ color: '#fff' }}>
-            Bạn có đoán được màu không? 🎨
-          </h1>
+          
+
+          
           <p className="text-lg" style={{ color: 'rgba(255,255,255,0.65)' }}>
             Hãy khớp màu sắc chính xác của các nhân vật hoạt hình yêu thích bằng cách điều chỉnh thanh Hue, Saturation & Brightness.
           </p>
