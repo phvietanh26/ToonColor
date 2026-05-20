@@ -13,11 +13,11 @@ export default function CombinedColorPicker({ hsb, onChange, questionIndex, tota
 
   return (
     <div
-      className="relative w-full rounded-3xl overflow-hidden flex flex-col"
+      className="relative w-full h-full rounded-3xl overflow-hidden flex flex-col"
       style={{
         backgroundColor: hex,
         boxShadow: `0 8px 32px ${hex}66`,
-        minHeight: '400px',
+        minHeight: '360px',
         transition: 'background-color 0.1s ease',
       }}
     >
@@ -89,44 +89,67 @@ export default function CombinedColorPicker({ hsb, onChange, questionIndex, tota
 }
 
 function VerticalSlider({ value, min, max, gradient, onChange }) {
-  const pct = ((value - min) / (max - min)) * 100;
+  // top=0 means max value, top=100% means min value (visually: drag up = increase)
+  const pct = ((max - value) / (max - min)) * 100;
+
+  const handleClick = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const y = e.clientY - rect.top;
+    const ratio = 1 - y / rect.height;
+    const newVal = Math.round(min + ratio * (max - min));
+    onChange(Math.max(min, Math.min(max, newVal)));
+  };
+
+  const handleMouseDown = (e) => {
+    const move = (ev) => {
+      const rect = e.currentTarget.getBoundingClientRect();
+      const y = ev.clientY - rect.top;
+      const ratio = 1 - y / rect.height;
+      const newVal = Math.round(min + ratio * (max - min));
+      onChange(Math.max(min, Math.min(max, newVal)));
+    };
+    const up = () => {
+      window.removeEventListener('mousemove', move);
+      window.removeEventListener('mouseup', up);
+    };
+    window.addEventListener('mousemove', move);
+    window.addEventListener('mouseup', up);
+  };
+
+  const handleTouchMove = (e) => {
+    const touch = e.touches[0];
+    const rect = e.currentTarget.getBoundingClientRect();
+    const y = touch.clientY - rect.top;
+    const ratio = 1 - y / rect.height;
+    const newVal = Math.round(min + ratio * (max - min));
+    onChange(Math.max(min, Math.min(max, newVal)));
+  };
 
   return (
     <div
-      className="relative flex items-center justify-center rounded-2xl overflow-hidden"
+      className="relative flex-shrink-0 rounded-2xl overflow-hidden cursor-pointer"
       style={{
         width: '28px',
         height: '280px',
         background: gradient,
         boxShadow: '0 2px 12px rgba(0,0,0,0.3)',
-        flexShrink: 0,
       }}
+      onClick={handleClick}
+      onMouseDown={handleMouseDown}
+      onTouchMove={handleTouchMove}
     >
       {/* Thumb indicator */}
       <div
-        className="absolute left-1/2 -translate-x-1/2 w-7 h-7 rounded-full border-3 border-white"
+        className="absolute left-1/2 -translate-x-1/2 rounded-full"
         style={{
           top: `calc(${pct}% - 14px)`,
+          width: '26px',
+          height: '26px',
           backgroundColor: 'rgba(255,255,255,0.3)',
           border: '3px solid white',
           boxShadow: '0 2px 8px rgba(0,0,0,0.35)',
           pointerEvents: 'none',
           transition: 'top 0.05s ease',
-        }}
-      />
-      <input
-        type="range"
-        min={min}
-        max={max}
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        className="absolute opacity-0 cursor-pointer"
-        style={{
-          writingMode: 'vertical-lr',
-          direction: 'rtl',
-          width: '100%',
-          height: '100%',
-          WebkitAppearance: 'slider-vertical',
         }}
       />
     </div>
