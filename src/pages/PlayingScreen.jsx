@@ -46,10 +46,10 @@ export default function PlayingScreen({ question, questionIndex, totalQuestions,
         </motion.div>
 
         {/* Main 2-col layout */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-8">
           {/* LEFT — Character image */}
           <div className="flex flex-col items-center justify-center">
-            <div className="w-full max-w-sm aspect-square rounded-3xl overflow-hidden border flex items-center justify-center p-6"
+            <div className="w-full aspect-square rounded-3xl overflow-hidden border flex items-center justify-center p-6"
               style={{ backgroundColor: 'rgba(255,255,255,0.05)', borderColor: 'rgba(255,255,255,0.1)', boxShadow: '0 4px 24px rgba(0,0,0,0.3)' }}>
               {imgError ? (
                 <div className="flex flex-col items-center gap-3 text-center">

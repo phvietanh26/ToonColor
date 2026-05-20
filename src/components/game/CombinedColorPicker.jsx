@@ -17,7 +17,7 @@ export default function CombinedColorPicker({ hsb, onChange, questionIndex, tota
       style={{
         backgroundColor: hex,
         boxShadow: `0 8px 32px ${hex}66`,
-        minHeight: '320px',
+        minHeight: '400px',
         transition: 'background-color 0.1s ease',
       }}
     >
@@ -95,8 +95,8 @@ function VerticalSlider({ value, min, max, gradient, onChange }) {
     <div
       className="relative flex items-center justify-center rounded-2xl overflow-hidden"
       style={{
-        width: '44px',
-        height: '200px',
+        width: '28px',
+        height: '280px',
         background: gradient,
         boxShadow: '0 2px 12px rgba(0,0,0,0.3)',
         flexShrink: 0,
