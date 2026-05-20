@@ -1,5 +1,12 @@
 // ToonColor Guess — Question Bank
 // answer: { h: 0-360, s: 0-100, b: 0-100 }
+//
+// mask_url: grayscale PNG — white = recolorable region, black = untouched.
+// Use a solid white 1×1 PNG as fallback (full image tinted).
+// Replace mask_url per-question with a real mask image for precise region control.
+//
+// Fallback white mask (data URI) — recolors entire non-transparent region:
+const WHITE_MASK = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwADhQGAWjR9awAAAABJRU5ErkJggg==';
 
 export const ALL_QUESTIONS = [
   {
@@ -8,6 +15,7 @@ export const ALL_QUESTIONS = [
     show: "SpongeBob SquarePants (1999)",
     part: "Body",
     image_url: "https://upload.wikimedia.org/wikipedia/en/3/3b/SpongeBob_SquarePants_character.svg",
+    mask_url: WHITE_MASK,
     hint: "Màu vàng đặc trưng của miếng bọt biển",
     answer: { h: 51, s: 100, b: 98 }
   },
@@ -17,6 +25,7 @@ export const ALL_QUESTIONS = [
     show: "Doraemon (1979)",
     part: "Body",
     image_url: "https://upload.wikimedia.org/wikipedia/en/b/bd/Doraemon_character.png",
+    mask_url: WHITE_MASK,
     hint: "Màu xanh dương nổi bật của chú mèo máy",
     answer: { h: 195, s: 85, b: 88 }
   },
@@ -26,6 +35,7 @@ export const ALL_QUESTIONS = [
     show: "Pokémon (1997)",
     part: "Body",
     image_url: "https://upload.wikimedia.org/wikipedia/en/a/a6/Pok%C3%A9mon_Pikachu_art.png",
+    mask_url: WHITE_MASK,
     hint: "Màu vàng tươi của Pikachu",
     answer: { h: 48, s: 95, b: 100 }
   },
@@ -35,6 +45,7 @@ export const ALL_QUESTIONS = [
     show: "Sesame Street (1969)",
     part: "Fur",
     image_url: "https://upload.wikimedia.org/wikipedia/en/7/74/Elmo_from_Sesame_Street.png",
+    mask_url: WHITE_MASK,
     hint: "Màu đỏ rực của Elmo",
     answer: { h: 4, s: 90, b: 88 }
   },
@@ -44,6 +55,7 @@ export const ALL_QUESTIONS = [
     show: "Shrek (2001)",
     part: "Skin",
     image_url: "https://upload.wikimedia.org/wikipedia/en/8/8e/Shrek-DreamWorks.png",
+    mask_url: WHITE_MASK,
     hint: "Màu xanh lá đặc trưng của Shrek",
     answer: { h: 95, s: 52, b: 65 }
   },
@@ -53,6 +65,7 @@ export const ALL_QUESTIONS = [
     show: "Winnie the Pooh (1966)",
     part: "Body",
     image_url: "https://upload.wikimedia.org/wikipedia/en/1/10/Winnie_the_Pooh_Winnie_the_Pooh.jpg",
+    mask_url: WHITE_MASK,
     hint: "Màu vàng cam của chú gấu Pooh",
     answer: { h: 38, s: 72, b: 92 }
   },
@@ -62,6 +75,7 @@ export const ALL_QUESTIONS = [
     show: "Mickey Mouse (1928)",
     part: "Pants",
     image_url: "https://upload.wikimedia.org/wikipedia/en/d/d4/Mickey_Mouse.png",
+    mask_url: WHITE_MASK,
     hint: "Màu đỏ của quần short Mickey",
     answer: { h: 355, s: 88, b: 78 }
   },
@@ -71,6 +85,7 @@ export const ALL_QUESTIONS = [
     show: "Tom and Jerry (1940)",
     part: "Fur",
     image_url: "https://upload.wikimedia.org/wikipedia/en/f/f8/Tom_Tom_and_Jerry.png",
+    mask_url: WHITE_MASK,
     hint: "Màu xám xanh nhạt của mèo Tom",
     answer: { h: 210, s: 20, b: 68 }
   },
@@ -80,6 +95,7 @@ export const ALL_QUESTIONS = [
     show: "The Simpsons (1989)",
     part: "Shirt",
     image_url: "https://upload.wikimedia.org/wikipedia/en/a/aa/Bart_Simpson_200px.png",
+    mask_url: WHITE_MASK,
     hint: "Màu đỏ cam của áo Bart Simpson",
     answer: { h: 15, s: 85, b: 90 }
   },
@@ -89,6 +105,7 @@ export const ALL_QUESTIONS = [
     show: "My Neighbor Totoro (1988)",
     part: "Body",
     image_url: "https://upload.wikimedia.org/wikipedia/en/0/02/My_Neighbor_Totoro_-_Totoro_and_Satsuki.png",
+    mask_url: WHITE_MASK,
     hint: "Màu xám trắng của Totoro",
     answer: { h: 220, s: 8, b: 72 }
   }
