@@ -1,7 +1,17 @@
 import React from 'react';
-import { hsbToHex, getSatGradient, getBrGradient } from '@/utils/colorMath';
+import { hsbToHex } from '@/utils/colorMath';
 
-const HUE_GRADIENT = 'linear-gradient(to top, #ff0000, #ff00ff, #0000ff, #00ffff, #00ff00, #ffff00, #ff0000)';
+// Hue goes 0→360 from bottom to top (matching "to top" gradient direction)
+// Order: red(0) → yellow(60) → green(120) → cyan(180) → blue(240) → magenta(300) → red(360)
+const HUE_GRADIENT = `linear-gradient(to top, 
+  ${hsbToHex(0, 100, 100)},
+  ${hsbToHex(60, 100, 100)},
+  ${hsbToHex(120, 100, 100)},
+  ${hsbToHex(180, 100, 100)},
+  ${hsbToHex(240, 100, 100)},
+  ${hsbToHex(300, 100, 100)},
+  ${hsbToHex(360, 100, 100)}
+)`;
 
 export default function CombinedColorPicker({ hsb, onChange, questionIndex, totalQuestions, onConfirm }) {
   const { h, s, b } = hsb;
@@ -10,6 +20,12 @@ export default function CombinedColorPicker({ hsb, onChange, questionIndex, tota
   const handleChange = (key, value) => {
     onChange({ ...hsb, [key]: Number(value) });
   };
+
+  // Saturation: bottom=gray (sat=0), top=full color (sat=100), at current hue & brightness
+  const satGradient = `linear-gradient(to top, ${hsbToHex(h, 0, b)}, ${hsbToHex(h, 100, b)})`;
+
+  // Brightness: bottom=black (br=0), top=full bright (br=100), at current hue & saturation
+  const brGradient = `linear-gradient(to top, ${hsbToHex(h, s, 0)}, ${hsbToHex(h, s, 100)})`;
 
   return (
     <div
@@ -33,7 +49,7 @@ export default function CombinedColorPicker({ hsb, onChange, questionIndex, tota
 
       {/* Sliders area */}
       <div className="flex-1 flex items-center gap-3 px-5 py-4">
-        {/* Hue slider - vertical */}
+        {/* Hue slider */}
         <VerticalSlider
           value={h}
           min={0}
@@ -42,25 +58,24 @@ export default function CombinedColorPicker({ hsb, onChange, questionIndex, tota
           onChange={(v) => handleChange('h', v)}
         />
 
-        {/* Saturation slider - vertical */}
+        {/* Saturation slider */}
         <VerticalSlider
           value={s}
           min={0}
           max={100}
-          gradient={`linear-gradient(to top, hsl(${h},0%,50%), hsl(${h},100%,50%))`}
+          gradient={satGradient}
           onChange={(v) => handleChange('s', v)}
         />
 
-        {/* Brightness slider - vertical */}
+        {/* Brightness slider */}
         <VerticalSlider
           value={b}
           min={0}
           max={100}
-          gradient={`linear-gradient(to top, #000, hsl(${h},${s}%,50%), hsl(${h},${s}%,100%))`}
+          gradient={brGradient}
           onChange={(v) => handleChange('b', v)}
         />
 
-        {/* Spacer */}
         <div className="flex-1" />
 
         {/* Confirm button */}
@@ -89,7 +104,7 @@ export default function CombinedColorPicker({ hsb, onChange, questionIndex, tota
 }
 
 function VerticalSlider({ value, min, max, gradient, onChange }) {
-  // top=0 means max value, top=100% means min value (visually: drag up = increase)
+  // pct: thumb position from top. top=0% → max value, top=100% → min value
   const pct = ((max - value) / (max - min)) * 100;
 
   const handleClick = (e) => {
@@ -117,6 +132,7 @@ function VerticalSlider({ value, min, max, gradient, onChange }) {
   };
 
   const handleTouchMove = (e) => {
+    e.preventDefault();
     const touch = e.touches[0];
     const rect = e.currentTarget.getBoundingClientRect();
     const y = touch.clientY - rect.top;
@@ -138,7 +154,6 @@ function VerticalSlider({ value, min, max, gradient, onChange }) {
       onMouseDown={handleMouseDown}
       onTouchMove={handleTouchMove}
     >
-      {/* Thumb indicator */}
       <div
         className="absolute left-1/2 -translate-x-1/2 rounded-full"
         style={{
