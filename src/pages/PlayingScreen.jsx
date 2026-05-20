@@ -16,7 +16,7 @@ export default function PlayingScreen({ question, questionIndex, totalQuestions,
     <div className="min-h-screen" style={{ backgroundColor: 'transparent' }}>
       {/* Navbar */}
       <nav className="w-full h-16 flex items-center justify-between px-6"
-        style={{ borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
+      style={{ borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
         <span className="font-extrabold text-lg" style={{ color: 'var(--color-primary)' }}>
           ToonColor
         </span>
@@ -30,10 +30,10 @@ export default function PlayingScreen({ question, questionIndex, totalQuestions,
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.2 }}
-          className="mb-8 text-center"
-        >
+          className="mb-8 text-center">
+          
           <span className="inline-block px-4 py-1.5 rounded-pill text-sm font-semibold mb-3"
-            style={{ backgroundColor: 'rgba(66,85,255,0.18)', color: 'var(--color-primary)' }}>
+          style={{ backgroundColor: 'rgba(66,85,255,0.18)', color: 'var(--color-primary)' }}>
             Câu {questionIndex + 1} / {totalQuestions}
           </span>
           <h2 className="text-2xl sm:text-3xl font-extrabold" style={{ color: '#fff' }}>
@@ -50,9 +50,9 @@ export default function PlayingScreen({ question, questionIndex, totalQuestions,
           {/* LEFT — Character image */}
           <div className="flex flex-col">
             <div className="flex-1 rounded-3xl overflow-hidden border flex items-center justify-center p-6"
-              style={{ backgroundColor: 'rgba(255,255,255,0.05)', borderColor: 'rgba(255,255,255,0.1)', boxShadow: '0 4px 24px rgba(0,0,0,0.3)' }}>
-              {imgError ? (
-                <div className="flex flex-col items-center gap-3 text-center">
+            style={{ backgroundColor: 'rgba(255,255,255,0.05)', borderColor: 'rgba(255,255,255,0.1)', boxShadow: '0 4px 24px rgba(0,0,0,0.3)' }}>
+              {imgError ?
+              <div className="flex flex-col items-center gap-3 text-center">
                   <div className="text-6xl">🎨</div>
                   <div className="font-bold text-lg" style={{ color: '#fff' }}>
                     {question.character}
@@ -60,17 +60,17 @@ export default function PlayingScreen({ question, questionIndex, totalQuestions,
                   <div className="text-sm" style={{ color: 'rgba(255,255,255,0.55)' }}>
                     {question.hint}
                   </div>
-                </div>
-              ) : (
-                <img
-                  src={question.image_url}
-                  alt={question.character}
-                  className="w-full h-full object-contain"
-                  onError={() => setImgError(true)}
-                />
-              )}
+                </div> :
+
+              <img
+                src={question.image_url}
+                alt={question.character}
+                className="w-full h-full object-contain"
+                onError={() => setImgError(true)} />
+
+              }
             </div>
-            <p className="mt-3 text-sm font-semibold" style={{ color: 'rgba(255,255,255,0.55)' }}>
+            <p className="mt-3 text-sm font-semibold hidden" style={{ color: 'rgba(255,255,255,0.55)' }}>
               💡 {question.hint}
             </p>
           </div>
@@ -82,11 +82,11 @@ export default function PlayingScreen({ question, questionIndex, totalQuestions,
               onChange={setHsb}
               questionIndex={questionIndex}
               totalQuestions={totalQuestions}
-              onConfirm={handleConfirm}
-            />
+              onConfirm={handleConfirm} />
+            
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>);
+
 }
