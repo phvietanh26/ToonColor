@@ -1,7 +1,7 @@
 import React from 'react';
 import { hsbToHex, getSatGradient, getBrGradient } from '@/utils/colorMath';
 
-const HUE_GRADIENT = 'linear-gradient(to bottom, #ff0000, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff, #ff0000)';
+const HUE_GRADIENT = 'linear-gradient(to top, #ff0000, #ff00ff, #0000ff, #00ffff, #00ff00, #ffff00, #ff0000)';
 
 export default function CombinedColorPicker({ hsb, onChange, questionIndex, totalQuestions, onConfirm }) {
   const { h, s, b } = hsb;
@@ -47,7 +47,7 @@ export default function CombinedColorPicker({ hsb, onChange, questionIndex, tota
           value={s}
           min={0}
           max={100}
-          gradient={`linear-gradient(to bottom, hsl(${h},100%,50%), hsl(${h},0%,50%))`}
+          gradient={`linear-gradient(to top, hsl(${h},0%,50%), hsl(${h},100%,50%))`}
           onChange={(v) => handleChange('s', v)}
         />
 
@@ -56,7 +56,7 @@ export default function CombinedColorPicker({ hsb, onChange, questionIndex, tota
           value={b}
           min={0}
           max={100}
-          gradient={`linear-gradient(to bottom, hsl(${h},${s}%,100%), hsl(${h},${s}%,50%), #000)`}
+          gradient={`linear-gradient(to top, #000, hsl(${h},${s}%,50%), hsl(${h},${s}%,100%))`}
           onChange={(v) => handleChange('b', v)}
         />
 
@@ -101,8 +101,8 @@ function VerticalSlider({ value, min, max, gradient, onChange }) {
   };
 
   const handleMouseDown = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
     const move = (ev) => {
-      const rect = e.currentTarget.getBoundingClientRect();
       const y = ev.clientY - rect.top;
       const ratio = 1 - y / rect.height;
       const newVal = Math.round(min + ratio * (max - min));
