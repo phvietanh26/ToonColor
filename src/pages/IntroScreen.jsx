@@ -19,7 +19,7 @@ export default function IntroScreen({ onStart }) {
             style={{ backgroundColor: 'var(--color-primary)' }}>
               <Palette className="w-5 h-5 text-white" />
             </div>
-            <span className="font-extrabold text-4xl" style={{ color: 'var(--color-primary)' }}>
+            <span className="font-extrabold text-4xl text-[hsl(var(--destructive-foreground))] bg-[hsl(var(--popover))]" style={{ color: 'var(--color-primary)' }}>
               ToonColor
             </span>
           </div>
