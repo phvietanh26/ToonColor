@@ -27,9 +27,9 @@ export function hsbToHex(h, s, b) {
   return `#${toHex(r)}${toHex(g)}${toHex(bv)}`;
 }
 
-// ─── Scoring config ───────────────────────────────────────────────────────────
-const WEIGHTS = {
-  hue:        0.5,   // hue is most perceptually significant
+// ─── Base weights (used when colour is fully vivid) ───────────────────────────
+const BASE_WEIGHTS = {
+  hue:        0.5,
   saturation: 0.2,
   brightness: 0.3,
 };
@@ -46,16 +46,73 @@ const CURVE_STEEPNESS = 3.5;
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
+ * Compute perception-based dynamic weights for H, S, B.
+ *
+ * Core insight:
+ *  - When a colour is very dark (low B), it looks nearly black regardless of H or S.
+ *    → Hue & Saturation become irrelevant; only Brightness matters.
+ *  - When a colour is nearly white (high B + low S), Hue is again invisible.
+ *    → Reduce Hue weight proportionally.
+ *  - We quantify "hue visibility" as how much colour actually shows through,
+ *    then scale the base Hue weight by that visibility factor.
+ *  - Weights are always renormalised so they sum to exactly 1.
+ *
+ * @param {object} answerHSB - The target colour {h, s, b}
+ * @returns {{ hue, saturation, brightness }} — weights that sum to 1
+ */
+function computeDynamicWeights(answerHSB) {
+  const bNorm = answerHSB.b / 100; // 0 = black, 1 = full bright
+  const sNorm = answerHSB.s / 100; // 0 = grey/white, 1 = fully saturated
+
+  // "Hue visibility" — how much the hue actually shows to the human eye.
+  // Near-black (low B): hue is invisible regardless of S.
+  // Near-white (high B, low S): hue is also invisible.
+  // Peak visibility when both B and S are high.
+  const hueVisibility = bNorm * sNorm; // 0 → 1
+
+  // Scale the base hue weight by visibility
+  const scaledHue = BASE_WEIGHTS.hue * hueVisibility;
+
+  // Redistribute the "lost" hue weight into brightness (more critical in dark colours)
+  // and saturation (more critical in near-white colours).
+  const lostWeight = BASE_WEIGHTS.hue - scaledHue;
+
+  // When dark: all lost weight goes to brightness.
+  // When near-white (bright + desaturated): split lost weight toward saturation.
+  const darknessContribution  = 1 - bNorm;                     // 1 when black
+  const whitenessContribution = bNorm * (1 - sNorm);           // 1 when white
+  const total = darknessContribution + whitenessContribution || 1;
+
+  const toBrightness  = lostWeight * (darknessContribution / total);
+  const toSaturation  = lostWeight * (whitenessContribution / total);
+
+  const w = {
+    hue:        scaledHue,
+    saturation: BASE_WEIGHTS.saturation + toSaturation,
+    brightness: BASE_WEIGHTS.brightness + toBrightness,
+  };
+
+  // Normalise so weights always sum to exactly 1
+  const sum = w.hue + w.saturation + w.brightness;
+  return {
+    hue:        w.hue        / sum,
+    saturation: w.saturation / sum,
+    brightness: w.brightness / sum,
+  };
+}
+
+/**
  * Calculate score (0–10) based on perceptual HSB delta.
  *
  * Scoring strategy:
- *  - Circular hue distance to handle wrap-around (e.g. 359° vs 1°)
- *  - Weighted error combining H, S, B deltas (each normalised to 0–1)
- *  - Exponential curve:  score = 10 * exp(-weightedError * CURVE_STEEPNESS)
- *    → very close colours score 8.5–10
- *    → slight mismatches score ~5–7
- *    → large mismatches score < 3
- *  - PERFECT bonus: if all deltas are within tight thresholds → 10.00
+ *  1. Circular hue distance (handles 359° vs 1° correctly).
+ *  2. Dynamic weights via computeDynamicWeights() — hue weight shrinks when
+ *     the colour is nearly black or nearly white, matching human perception.
+ *  3. Exponential curve:  score = 10 * exp(-weightedError * CURVE_STEEPNESS)
+ *     → very close colours  →  8.5–10
+ *     → slight mismatches   →  5–7
+ *     → large mismatches    →  < 3
+ *  4. PERFECT bonus: all deltas within tight thresholds → 10.00
  */
 export function calculateScore(playerHSB, answerHSB) {
   const hueDelta = Math.min(
@@ -65,26 +122,25 @@ export function calculateScore(playerHSB, answerHSB) {
   const satDelta = Math.abs(playerHSB.s - answerHSB.s);
   const brDelta  = Math.abs(playerHSB.b - answerHSB.b);
 
-  // Perfect match bonus
+  // Perfect match shortcut
   if (hueDelta < PERFECT.hueDelta && satDelta < PERFECT.satDelta && brDelta < PERFECT.brDelta) {
     return 10;
   }
 
-  // Normalise each delta to 0–1
+  // Normalise deltas to 0–1
   const hueNorm = hueDelta / 180;
   const satNorm = satDelta / 100;
   const brNorm  = brDelta  / 100;
 
-  // Weighted error (0–1 scale)
-  const weightedError =
-    hueNorm * WEIGHTS.hue +
-    satNorm * WEIGHTS.saturation +
-    brNorm  * WEIGHTS.brightness;
+  // Get perception-aware weights based on the answer colour
+  const w = computeDynamicWeights(answerHSB);
 
-  // Exponential curve — perceptually natural drop-off
+  // Weighted error using dynamic weights
+  const weightedError = hueNorm * w.hue + satNorm * w.saturation + brNorm * w.brightness;
+
+  // Exponential curve for perceptually natural score drop-off
   const raw = 10 * Math.exp(-weightedError * CURVE_STEEPNESS);
 
-  // Clamp to 0–10 and round to 2 decimal places
   return Math.round(Math.max(0, Math.min(10, raw)) * 100) / 100;
 }
 
