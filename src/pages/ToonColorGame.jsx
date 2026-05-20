@@ -3,13 +3,11 @@ import { getRandomSet } from '@/data/questions';
 import { calculateScore } from '@/utils/colorMath';
 import IntroScreen from './IntroScreen';
 import PlayingScreen from './PlayingScreen';
-import ResultRoundScreen from './ResultRoundScreen';
 import FinalScreen from './FinalScreen';
 
 const STATES = {
   INTRO: 'INTRO',
   PLAYING: 'PLAYING',
-  RESULT_ROUND: 'RESULT_ROUND',
   RESULT_FINAL: 'RESULT_FINAL',
 };
 
@@ -18,8 +16,6 @@ export default function ToonColorGame() {
   const [questions, setQuestions] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [results, setResults] = useState([]);
-  const [lastPlayerHSB, setLastPlayerHSB] = useState(null);
-  const [lastScore, setLastScore] = useState(0);
 
   const handleStart = useCallback(() => {
     const set = getRandomSet();
@@ -33,11 +29,7 @@ export default function ToonColorGame() {
     const question = questions[currentIndex];
     const score = calculateScore(playerHSB, question.answer);
     const newResult = { playerHSB, score };
-
-    setLastPlayerHSB(playerHSB);
-    setLastScore(score);
     setResults(prev => [...prev, newResult]);
-    setGameState(STATES.RESULT_ROUND);
   }, [questions, currentIndex]);
 
   const handleNext = useCallback(() => {
@@ -70,17 +62,6 @@ export default function ToonColorGame() {
           questionIndex={currentIndex}
           totalQuestions={questions.length}
           onConfirm={handleConfirm}
-        />
-      );
-
-    case STATES.RESULT_ROUND:
-      return (
-        <ResultRoundScreen
-          question={questions[currentIndex]}
-          playerHSB={lastPlayerHSB}
-          score={lastScore}
-          questionIndex={currentIndex}
-          totalQuestions={questions.length}
           onNext={handleNext}
         />
       );
