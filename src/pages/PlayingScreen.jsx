@@ -109,30 +109,30 @@ export default function PlayingScreen({ question, questionIndex, totalQuestions,
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.25 }}
                   className="flex-1 flex flex-col rounded-3xl overflow-hidden"
-                  style={{ boxShadow: '0 8px 32px rgba(0,0,0,0.3)' }}
+                  style={{ boxShadow: '0 8px 32px rgba(0,0,0,0.3)', minHeight: '320px' }}
                 >
                   {/* Top half — player selection */}
                   <div
-                    className="flex-1 flex flex-col justify-center px-7 py-6"
-                    style={{ backgroundColor: playerHex }}
+                    className="flex-1 flex flex-col justify-center px-7 py-8"
+                    style={{ backgroundColor: playerHex, flex: '1 1 50%' }}
                   >
-                    <div className="flex items-start justify-between">
-                      <div>
-                        <p className="text-xs font-bold uppercase tracking-widest mb-1"
-                          style={{ color: 'rgba(255,255,255,0.7)' }}>
+                    <div className="flex items-end justify-between h-full">
+                      <div className="flex flex-col justify-between h-full">
+                        <p className="text-sm font-extrabold uppercase tracking-widest"
+                          style={{ color: 'rgba(255,255,255,0.75)' }}>
                           Your Selection
                         </p>
-                        <p className="text-sm font-mono font-semibold"
-                          style={{ color: 'rgba(255,255,255,0.85)' }}>
+                        <p className="text-lg font-extrabold font-mono mt-auto"
+                          style={{ color: '#fff' }}>
                           H{result.playerHSB.h} S{result.playerHSB.s} B{result.playerHSB.b}
                         </p>
                       </div>
-                      <div className="text-right">
-                        <p className="text-xs font-semibold mb-1"
-                          style={{ color: 'rgba(255,255,255,0.6)' }}>
+                      <div className="text-right flex flex-col items-end justify-between h-full">
+                        <p className="text-xs font-semibold"
+                          style={{ color: 'rgba(255,255,255,0.55)' }}>
                           ToonColor
                         </p>
-                        <p className="text-5xl font-extrabold" style={{ color: '#fff', lineHeight: 1 }}>
+                        <p className="text-6xl font-extrabold leading-none" style={{ color: '#fff' }}>
                           {result.score.toFixed(2)}
                         </p>
                       </div>
@@ -141,16 +141,16 @@ export default function PlayingScreen({ question, questionIndex, totalQuestions,
 
                   {/* Bottom half — original answer */}
                   <div
-                    className="flex items-center justify-between px-7 py-6"
-                    style={{ backgroundColor: answerHex }}
+                    className="flex items-end justify-between px-7 py-8"
+                    style={{ backgroundColor: answerHex, flex: '1 1 50%' }}
                   >
-                    <div>
-                      <p className="text-xs font-bold uppercase tracking-widest mb-1"
-                        style={{ color: 'rgba(255,255,255,0.7)' }}>
+                    <div className="flex flex-col gap-2">
+                      <p className="text-sm font-extrabold uppercase tracking-widest"
+                        style={{ color: 'rgba(255,255,255,0.75)' }}>
                         Original
                       </p>
-                      <p className="text-sm font-mono font-semibold"
-                        style={{ color: 'rgba(255,255,255,0.85)' }}>
+                      <p className="text-lg font-extrabold font-mono"
+                        style={{ color: '#fff' }}>
                         H{question.answer.h} S{question.answer.s} B{question.answer.b}
                       </p>
                     </div>
@@ -158,10 +158,10 @@ export default function PlayingScreen({ question, questionIndex, totalQuestions,
                     {/* Next button */}
                     <button
                       onClick={onNext}
-                      className="w-14 h-14 rounded-full flex items-center justify-center transition-all duration-150 hover:scale-110 active:scale-95"
+                      className="w-14 h-14 rounded-full flex items-center justify-center transition-all duration-150 hover:scale-110 active:scale-95 flex-shrink-0"
                       style={{
-                        backgroundColor: 'rgba(255,255,255,0.9)',
-                        boxShadow: '0 4px 16px rgba(0,0,0,0.25)',
+                        backgroundColor: 'rgba(255,255,255,0.95)',
+                        boxShadow: '0 4px 16px rgba(0,0,0,0.3)',
                       }}
                     >
                       <ArrowRight className="w-6 h-6" style={{ color: '#333' }} />
