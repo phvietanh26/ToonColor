@@ -11,7 +11,7 @@ export default function ResultRoundScreen({ question, playerHSB, score, question
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-4 py-12"
-      style={{ backgroundColor: 'var(--color-bg-page)' }}>
+      style={{ backgroundColor: 'transparent' }}>
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -21,33 +21,33 @@ export default function ResultRoundScreen({ question, playerHSB, score, question
         {/* Header */}
         <div className="text-center mb-8">
           <span className="inline-block px-4 py-1.5 rounded-pill text-sm font-semibold mb-3"
-            style={{ backgroundColor: 'rgba(66,85,255,0.08)', color: 'var(--color-primary)' }}>
-            Round {questionIndex + 1} / {totalQuestions}
+            style={{ backgroundColor: 'rgba(66,85,255,0.18)', color: 'var(--color-primary)' }}>
+            Vòng {questionIndex + 1} / {totalQuestions}
           </span>
-          <h2 className="text-2xl font-extrabold" style={{ color: 'var(--color-text-primary)' }}>
+          <h2 className="text-2xl font-extrabold" style={{ color: '#fff' }}>
             {question.character} — {question.part}
           </h2>
         </div>
 
         {/* Score */}
-        <div className="bg-white rounded-3xl p-8 border mb-4 text-center"
-          style={{ borderColor: 'hsl(var(--border))', boxShadow: '0 4px 24px rgba(0,0,0,0.06)' }}>
-          <p className="text-sm font-semibold mb-4" style={{ color: 'var(--color-text-secondary)' }}>
-            Your Score
+        <div className="rounded-3xl p-8 border mb-4 text-center"
+          style={{ backgroundColor: 'rgba(255,255,255,0.06)', borderColor: 'rgba(255,255,255,0.1)', boxShadow: '0 4px 24px rgba(0,0,0,0.3)' }}>
+          <p className="text-sm font-semibold mb-4" style={{ color: 'rgba(255,255,255,0.55)' }}>
+            Điểm của bạn
           </p>
           <ScoreBadge score={score} size="lg" />
         </div>
 
         {/* Color Comparison */}
-        <div className="bg-white rounded-3xl p-6 border mb-6"
-          style={{ borderColor: 'hsl(var(--border))', boxShadow: '0 4px 24px rgba(0,0,0,0.06)' }}>
+        <div className="rounded-3xl p-6 border mb-6"
+          style={{ backgroundColor: 'rgba(255,255,255,0.06)', borderColor: 'rgba(255,255,255,0.1)', boxShadow: '0 4px 24px rgba(0,0,0,0.3)' }}>
           <h3 className="text-sm font-bold uppercase tracking-wider mb-5 text-center"
-            style={{ color: 'var(--color-text-secondary)' }}>
-            Color Comparison
+            style={{ color: 'rgba(255,255,255,0.5)' }}>
+            So sánh màu sắc
           </h3>
           <div className="grid grid-cols-2 gap-4">
-            <ColorBlock hex={playerHex} hsb={playerHSB} label="Your Color" />
-            <ColorBlock hex={answerHex} hsb={question.answer} label="Original Color" isAnswer />
+            <ColorBlock hex={playerHex} hsb={playerHSB} label="Màu của bạn" />
+            <ColorBlock hex={answerHex} hsb={question.answer} label="Màu gốc" isAnswer />
           </div>
         </div>
 
@@ -62,7 +62,7 @@ export default function ResultRoundScreen({ question, playerHSB, score, question
           onMouseEnter={e => e.currentTarget.style.backgroundColor = 'var(--color-primary-dark)'}
           onMouseLeave={e => e.currentTarget.style.backgroundColor = 'var(--color-primary)'}
         >
-          {isLast ? 'See Final Results' : 'Next Question'}
+          {isLast ? 'Xem kết quả cuối' : 'Câu tiếp theo'}
           <ArrowRight className="w-5 h-5" />
         </button>
       </motion.div>
@@ -83,13 +83,13 @@ function ColorBlock({ hex, hsb, label, isAnswer }) {
         }}
       />
       <span className="text-xs font-bold uppercase tracking-wide"
-        style={{ color: isAnswer ? 'var(--color-primary)' : 'var(--color-text-secondary)' }}>
+        style={{ color: isAnswer ? 'var(--color-primary)' : 'rgba(255,255,255,0.55)' }}>
         {label}
       </span>
-      <span className="font-mono text-xs font-semibold" style={{ color: 'var(--color-text-primary)' }}>
+      <span className="font-mono text-xs font-semibold" style={{ color: '#fff' }}>
         {hex.toUpperCase()}
       </span>
-      <span className="text-xs" style={{ color: 'var(--color-text-secondary)' }}>
+      <span className="text-xs" style={{ color: 'rgba(255,255,255,0.45)' }}>
         H:{hsb.h}° S:{hsb.s}% B:{hsb.b}%
       </span>
     </div>

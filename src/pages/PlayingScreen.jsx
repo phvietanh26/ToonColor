@@ -14,10 +14,10 @@ export default function PlayingScreen({ question, questionIndex, totalQuestions,
   };
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: 'var(--color-bg-page)' }}>
+    <div className="min-h-screen" style={{ backgroundColor: 'transparent' }}>
       {/* Navbar */}
-      <nav className="w-full bg-white border-b border-gray-100 h-16 flex items-center justify-between px-6"
-        style={{ borderColor: 'hsl(var(--border))' }}>
+      <nav className="w-full h-16 flex items-center justify-between px-6"
+        style={{ borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
         <span className="font-extrabold text-lg" style={{ color: 'var(--color-primary)' }}>
           ToonColor
         </span>
@@ -34,14 +34,14 @@ export default function PlayingScreen({ question, questionIndex, totalQuestions,
           className="mb-8 text-center"
         >
           <span className="inline-block px-4 py-1.5 rounded-pill text-sm font-semibold mb-3"
-            style={{ backgroundColor: 'rgba(66,85,255,0.08)', color: 'var(--color-primary)' }}>
-            Question {questionIndex + 1} of {totalQuestions}
+            style={{ backgroundColor: 'rgba(66,85,255,0.18)', color: 'var(--color-primary)' }}>
+            Câu {questionIndex + 1} / {totalQuestions}
           </span>
-          <h2 className="text-2xl sm:text-3xl font-extrabold" style={{ color: 'var(--color-text-primary)' }}>
-            What color is <span style={{ color: 'var(--color-primary)' }}>{question.character}</span>'s{' '}
-            <span style={{ color: 'var(--color-primary)' }}>{question.part}</span>?
+          <h2 className="text-2xl sm:text-3xl font-extrabold" style={{ color: '#fff' }}>
+            Màu <span style={{ color: 'var(--color-primary)' }}>{question.part}</span> của{' '}
+            <span style={{ color: 'var(--color-primary)' }}>{question.character}</span> là màu gì?
           </h2>
-          <p className="text-sm mt-2" style={{ color: 'var(--color-text-secondary)' }}>
+          <p className="text-sm mt-2" style={{ color: 'rgba(255,255,255,0.55)' }}>
             {question.show}
           </p>
         </motion.div>
@@ -50,15 +50,15 @@ export default function PlayingScreen({ question, questionIndex, totalQuestions,
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
           {/* LEFT — Character image */}
           <div className="flex flex-col items-center justify-center">
-            <div className="w-full max-w-sm aspect-square rounded-3xl overflow-hidden bg-white border flex items-center justify-center p-6"
-              style={{ borderColor: 'hsl(var(--border))', boxShadow: '0 4px 24px rgba(0,0,0,0.06)' }}>
+            <div className="w-full max-w-sm aspect-square rounded-3xl overflow-hidden border flex items-center justify-center p-6"
+              style={{ backgroundColor: 'rgba(255,255,255,0.05)', borderColor: 'rgba(255,255,255,0.1)', boxShadow: '0 4px 24px rgba(0,0,0,0.3)' }}>
               {imgError ? (
                 <div className="flex flex-col items-center gap-3 text-center">
                   <div className="text-6xl">🎨</div>
-                  <div className="font-bold text-lg" style={{ color: 'var(--color-text-primary)' }}>
+                  <div className="font-bold text-lg" style={{ color: '#fff' }}>
                     {question.character}
                   </div>
-                  <div className="text-sm" style={{ color: 'var(--color-text-secondary)' }}>
+                  <div className="text-sm" style={{ color: 'rgba(255,255,255,0.55)' }}>
                     {question.hint}
                   </div>
                 </div>
@@ -71,7 +71,7 @@ export default function PlayingScreen({ question, questionIndex, totalQuestions,
                 />
               )}
             </div>
-            <p className="mt-3 text-sm font-semibold" style={{ color: 'var(--color-text-secondary)' }}>
+            <p className="mt-3 text-sm font-semibold" style={{ color: 'rgba(255,255,255,0.55)' }}>
               💡 {question.hint}
             </p>
           </div>
@@ -79,17 +79,17 @@ export default function PlayingScreen({ question, questionIndex, totalQuestions,
           {/* RIGHT — Color Picker */}
           <div className="flex flex-col gap-6">
             {/* Preview */}
-            <div className="bg-white rounded-3xl p-6 border"
-              style={{ borderColor: 'hsl(var(--border))', boxShadow: '0 4px 24px rgba(0,0,0,0.06)' }}>
-              <ColorPreview hsb={hsb} label="Your Color" size="lg" />
+            <div className="rounded-3xl p-6 border"
+              style={{ backgroundColor: 'rgba(255,255,255,0.06)', borderColor: 'rgba(255,255,255,0.1)', boxShadow: '0 4px 24px rgba(0,0,0,0.3)' }}>
+              <ColorPreview hsb={hsb} label="Màu của bạn" size="lg" />
             </div>
 
             {/* Sliders */}
-            <div className="bg-white rounded-3xl p-6 border"
-              style={{ borderColor: 'hsl(var(--border))', boxShadow: '0 4px 24px rgba(0,0,0,0.06)' }}>
+            <div className="rounded-3xl p-6 border"
+              style={{ backgroundColor: 'rgba(255,255,255,0.06)', borderColor: 'rgba(255,255,255,0.1)', boxShadow: '0 4px 24px rgba(0,0,0,0.3)' }}>
               <h3 className="font-bold text-sm mb-5 uppercase tracking-wider"
-                style={{ color: 'var(--color-text-secondary)' }}>
-                Adjust Color
+                style={{ color: 'rgba(255,255,255,0.5)' }}>
+                Điều chỉnh màu sắc
               </h3>
               <HSBSlider hsb={hsb} onChange={setHsb} />
             </div>
@@ -106,7 +106,7 @@ export default function PlayingScreen({ question, questionIndex, totalQuestions,
               onMouseLeave={e => e.currentTarget.style.backgroundColor = 'var(--color-primary)'}
             >
               <CheckCircle className="w-5 h-5" />
-              Confirm Color
+              Xác nhận màu
             </button>
           </div>
         </div>

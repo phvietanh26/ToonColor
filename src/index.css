@@ -6,7 +6,7 @@
 
 @layer base {
   :root {
-    --background: 220 20% 97%;
+    --background: 240 67% 11%;
     --foreground: 225 20% 18%;
     --card: 0 0% 100%;
     --card-foreground: 225 20% 18%;
@@ -30,7 +30,7 @@
     /* Game-specific tokens */
     --color-primary: #4255FF;
     --color-primary-dark: #2d3dcc;
-    --color-bg-page: #F6F7FB;
+    --color-bg-page: #0A092D;
     --color-bg-surface: #FFFFFF;
     --color-text-primary: #282E3E;
     --color-text-secondary: #646E83;

@@ -9,7 +9,7 @@ export default function FinalScreen({ results, questions, onPlayAgain, onHome })
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-4 py-12"
-      style={{ backgroundColor: 'var(--color-bg-page)' }}>
+      style={{ backgroundColor: 'transparent' }}>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -22,19 +22,19 @@ export default function FinalScreen({ results, questions, onPlayAgain, onHome })
             style={{ backgroundColor: `${color}18` }}>
             <Trophy className="w-8 h-8" style={{ color }} />
           </div>
-          <h1 className="text-4xl font-extrabold mb-2" style={{ color: 'var(--color-text-primary)' }}>
-            Game Over!
+          <h1 className="text-4xl font-extrabold mb-2" style={{ color: '#fff' }}>
+            Kết thúc!
           </h1>
-          <p className="text-lg font-semibold" style={{ color: 'var(--color-text-secondary)' }}>
+          <p className="text-lg font-semibold" style={{ color: 'rgba(255,255,255,0.65)' }}>
             {label}
           </p>
         </div>
 
         {/* Total Score Card */}
-        <div className="bg-white rounded-3xl p-8 border mb-4 text-center"
-          style={{ borderColor: 'hsl(var(--border))', boxShadow: '0 4px 24px rgba(0,0,0,0.06)' }}>
-          <p className="text-sm font-semibold mb-3" style={{ color: 'var(--color-text-secondary)' }}>
-            Total Score
+        <div className="rounded-3xl p-8 border mb-4 text-center"
+          style={{ backgroundColor: 'rgba(255,255,255,0.06)', borderColor: 'rgba(255,255,255,0.1)', boxShadow: '0 4px 24px rgba(0,0,0,0.3)' }}>
+          <p className="text-sm font-semibold mb-3" style={{ color: 'rgba(255,255,255,0.55)' }}>
+            Tổng điểm
           </p>
           <div className="flex items-end justify-center gap-1">
             <span className="text-6xl font-extrabold tabular-nums" style={{ color }}>
@@ -47,11 +47,11 @@ export default function FinalScreen({ results, questions, onPlayAgain, onHome })
         </div>
 
         {/* Per-round thumbnails */}
-        <div className="bg-white rounded-3xl p-6 border mb-6"
-          style={{ borderColor: 'hsl(var(--border))', boxShadow: '0 4px 24px rgba(0,0,0,0.06)' }}>
+        <div className="rounded-3xl p-6 border mb-6"
+          style={{ backgroundColor: 'rgba(255,255,255,0.06)', borderColor: 'rgba(255,255,255,0.1)', boxShadow: '0 4px 24px rgba(0,0,0,0.3)' }}>
           <h3 className="text-sm font-bold uppercase tracking-wider mb-4"
-            style={{ color: 'var(--color-text-secondary)' }}>
-            Round Breakdown
+            style={{ color: 'rgba(255,255,255,0.5)' }}>
+            Chi tiết từng vòng
           </h3>
           <div className="grid grid-cols-5 gap-2">
             {results.map((r, i) => {
@@ -78,8 +78,8 @@ export default function FinalScreen({ results, questions, onPlayAgain, onHome })
               );
             })}
           </div>
-          <p className="text-xs mt-3 text-center" style={{ color: 'var(--color-text-secondary)' }}>
-            Left half = your color · Right half = original
+          <p className="text-xs mt-3 text-center" style={{ color: 'rgba(255,255,255,0.4)' }}>
+            Nửa trái = màu bạn chọn · Nửa phải = màu gốc
           </p>
         </div>
 
@@ -98,7 +98,7 @@ export default function FinalScreen({ results, questions, onPlayAgain, onHome })
             onMouseLeave={e => e.currentTarget.style.backgroundColor = 'transparent'}
           >
             <Home className="w-4 h-4" />
-            Home
+            Trang chủ
           </button>
           <button
             onClick={onPlayAgain}
@@ -111,7 +111,7 @@ export default function FinalScreen({ results, questions, onPlayAgain, onHome })
             onMouseLeave={e => e.currentTarget.style.backgroundColor = 'var(--color-primary)'}
           >
             <RotateCcw className="w-4 h-4" />
-            Play Again
+            Chơi lại
           </button>
         </div>
       </motion.div>

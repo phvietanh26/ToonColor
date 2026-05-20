@@ -5,7 +5,7 @@ import { Palette, Target, Trophy } from 'lucide-react';
 export default function IntroScreen({ onStart }) {
   return (
     <div className="min-h-screen flex items-center justify-center px-4 py-12"
-      style={{ backgroundColor: 'var(--color-bg-page)' }}>
+      style={{ backgroundColor: 'transparent' }}>
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
@@ -23,11 +23,11 @@ export default function IntroScreen({ onStart }) {
               ToonColor
             </span>
           </div>
-          <h1 className="text-4xl font-extrabold mb-3" style={{ color: 'var(--color-text-primary)' }}>
-            Can you guess the color? 🎨
+          <h1 className="text-4xl font-extrabold mb-3" style={{ color: '#fff' }}>
+            Bạn có đoán được màu không? 🎨
           </h1>
-          <p className="text-lg" style={{ color: 'var(--color-text-secondary)' }}>
-            Match the exact color of your favorite cartoon characters using Hue, Saturation & Brightness sliders.
+          <p className="text-lg" style={{ color: 'rgba(255,255,255,0.65)' }}>
+            Hãy khớp màu sắc chính xác của các nhân vật hoạt hình yêu thích bằng cách điều chỉnh thanh Hue, Saturation & Brightness.
           </p>
         </div>
 
@@ -35,21 +35,21 @@ export default function IntroScreen({ onStart }) {
         <div className="flex flex-col gap-3 mb-8">
           <RuleCard
             icon={<Target className="w-5 h-5" style={{ color: 'var(--color-primary)' }} />}
-            title="5 Questions per set"
-            desc="Each round, you'll see a character and must match a specific color."
-            bg="rgba(66,85,255,0.06)"
+            title="5 câu hỏi mỗi lượt"
+            desc="Mỗi vòng, bạn sẽ thấy một nhân vật và phải khớp đúng màu sắc của nó."
+            bg="rgba(66,85,255,0.12)"
           />
           <RuleCard
             icon={<Palette className="w-5 h-5" style={{ color: '#23B9A4' }} />}
-            title="Adjust HSB sliders"
-            desc="Drag Hue, Saturation & Brightness to match the original color."
-            bg="rgba(35,185,164,0.08)"
+            title="Điều chỉnh thanh HSB"
+            desc="Kéo Hue, Saturation & Brightness để khớp với màu gốc."
+            bg="rgba(35,185,164,0.12)"
           />
           <RuleCard
             icon={<Trophy className="w-5 h-5" style={{ color: '#F5A623' }} />}
-            title="Max 50 points"
-            desc="The closer your color, the higher your score. Perfect match = 10 pts!"
-            bg="rgba(245,166,35,0.08)"
+            title="Tối đa 50 điểm"
+            desc="Màu càng gần, điểm càng cao. Khớp hoàn hảo = 10 điểm!"
+            bg="rgba(245,166,35,0.12)"
           />
         </div>
 
@@ -72,7 +72,7 @@ export default function IntroScreen({ onStart }) {
           onMouseEnter={e => e.currentTarget.style.backgroundColor = 'var(--color-primary-dark)'}
           onMouseLeave={e => e.currentTarget.style.backgroundColor = 'var(--color-primary)'}
         >
-          Start Game →
+          Bắt đầu chơi →
         </button>
       </motion.div>
     </div>
@@ -84,8 +84,8 @@ function RuleCard({ icon, title, desc, bg }) {
     <div className="flex items-start gap-3 p-4 rounded-2xl" style={{ backgroundColor: bg }}>
       <div className="mt-0.5 shrink-0">{icon}</div>
       <div>
-        <div className="font-bold text-sm mb-0.5" style={{ color: 'var(--color-text-primary)' }}>{title}</div>
-        <div className="text-sm" style={{ color: 'var(--color-text-secondary)' }}>{desc}</div>
+        <div className="font-bold text-sm mb-0.5" style={{ color: '#fff' }}>{title}</div>
+        <div className="text-sm" style={{ color: 'rgba(255,255,255,0.6)' }}>{desc}</div>
       </div>
     </div>
   );
