@@ -127,8 +127,19 @@ export function calculateScore(playerHSB, answerHSB) {
     return 10;
   }
 
+  // Hue visibility: how much the hue actually registers to the human eye.
+  // Near-black (low B) or near-white (high B + low S) → hue is nearly invisible.
+  // We scale hueDelta DOWN so pastel/grey/dark colours are forgiving on Hue.
+  const bNorm = answerHSB.b / 100;
+  const sNorm = answerHSB.s / 100;
+  const hueVisibility = bNorm * sNorm; // 0 (invisible) → 1 (fully vivid)
+
+  // effectiveHueDelta shrinks when colour is dark, pastel, or desaturated.
+  // A 40° shift in a grey-blue barely shows; in a vivid red it's glaring.
+  const effectiveHueDelta = hueDelta * hueVisibility;
+
   // Normalise deltas to 0–1
-  const hueNorm = hueDelta / 180;
+  const hueNorm = effectiveHueDelta / 180;
   const satNorm = satDelta / 100;
   const brNorm  = brDelta  / 100;
 
