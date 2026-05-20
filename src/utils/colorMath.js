@@ -27,11 +27,35 @@ export function hsbToHex(h, s, b) {
   return `#${toHex(r)}${toHex(g)}${toHex(bv)}`;
 }
 
+// ─── Scoring config ───────────────────────────────────────────────────────────
+const WEIGHTS = {
+  hue:        0.5,   // hue is most perceptually significant
+  saturation: 0.2,
+  brightness: 0.3,
+};
+
+// "Perfect match" thresholds — returns 10.00 immediately
+const PERFECT = {
+  hueDelta: 3,   // degrees
+  satDelta: 5,   // 0-100
+  brDelta:  5,   // 0-100
+};
+
+// Exponential curve steepness — increase to punish errors harder
+const CURVE_STEEPNESS = 3.5;
+// ─────────────────────────────────────────────────────────────────────────────
+
 /**
- * Calculate score (0-10) based on HSB delta
- * Hue: circular distance (max 180), weight 0.5
- * Saturation: linear (max 100), weight 0.25
- * Brightness: linear (max 100), weight 0.25
+ * Calculate score (0–10) based on perceptual HSB delta.
+ *
+ * Scoring strategy:
+ *  - Circular hue distance to handle wrap-around (e.g. 359° vs 1°)
+ *  - Weighted error combining H, S, B deltas (each normalised to 0–1)
+ *  - Exponential curve:  score = 10 * exp(-weightedError * CURVE_STEEPNESS)
+ *    → very close colours score 8.5–10
+ *    → slight mismatches score ~5–7
+ *    → large mismatches score < 3
+ *  - PERFECT bonus: if all deltas are within tight thresholds → 10.00
  */
 export function calculateScore(playerHSB, answerHSB) {
   const hueDelta = Math.min(
@@ -39,19 +63,29 @@ export function calculateScore(playerHSB, answerHSB) {
     360 - Math.abs(playerHSB.h - answerHSB.h)
   );
   const satDelta = Math.abs(playerHSB.s - answerHSB.s);
-  const brDelta = Math.abs(playerHSB.b - answerHSB.b);
+  const brDelta  = Math.abs(playerHSB.b - answerHSB.b);
 
-  // Normalize each delta to 0–1
+  // Perfect match bonus
+  if (hueDelta < PERFECT.hueDelta && satDelta < PERFECT.satDelta && brDelta < PERFECT.brDelta) {
+    return 10;
+  }
+
+  // Normalise each delta to 0–1
   const hueNorm = hueDelta / 180;
   const satNorm = satDelta / 100;
-  const brNorm = brDelta / 100;
+  const brNorm  = brDelta  / 100;
 
-  // Weighted error
-  const weightedError = hueNorm * 0.5 + satNorm * 0.25 + brNorm * 0.25;
+  // Weighted error (0–1 scale)
+  const weightedError =
+    hueNorm * WEIGHTS.hue +
+    satNorm * WEIGHTS.saturation +
+    brNorm  * WEIGHTS.brightness;
 
-  // Score from 0 to 10, curved so very close = high score
-  const score = Math.max(0, 10 * (1 - weightedError * 1.5));
-  return Math.round(score * 100) / 100;
+  // Exponential curve — perceptually natural drop-off
+  const raw = 10 * Math.exp(-weightedError * CURVE_STEEPNESS);
+
+  // Clamp to 0–10 and round to 2 decimal places
+  return Math.round(Math.max(0, Math.min(10, raw)) * 100) / 100;
 }
 
 /**
