@@ -1,37 +1,36 @@
 /**
- * Question builder
- * ─────────────────────────────────────────────────────────────────────────────
- * Derives flat question objects from the character registry.
- * Each region on a character becomes one question.
+ * ToonColor Question Bank
+ *
+ * Questions are auto-generated from the character registry.
+ * Each character region becomes one question.
  *
  * Asset convention:
- *   /public/assets/<character.id>/image.png
- *   /public/assets/<character.id>/<region.mask>
+ *   /public/assets/{character.id}/image.png      — character artwork
+ *   /public/assets/{character.id}/{region.mask}  — grayscale mask
+ *     white pixel = recolorable region
+ *     black pixel = untouched region
  *
- * The recolor engine (utils/recolor.js) handles the canvas tinting.
- * MaskedRecolorCanvas renders the result.
+ * To add a new character → see data/characters/index.js
  */
+import CHARACTERS from './characters/index';
 
-import { CHARACTERS } from './registry';
-
-let _questionId = 1;
+let _id = 1;
 
 export const ALL_QUESTIONS = CHARACTERS.flatMap((char) =>
   char.regions.map((region) => ({
-    id: _questionId++,
-    character: char.character,
-    show: char.show,
-    part: region.part,
-    hint: region.hint,
-    answer: region.answer,
-    // Local asset paths served from /public/assets/
-    image_url: `/assets/${char.id}/image.png`,
-    mask_url:  `/assets/${char.id}/${region.mask}`,
+    id: _id++,
+    character:  char.character,
+    show:       char.show,
+    part:       region.part,
+    image_url:  `/assets/${char.id}/image.png`,
+    mask_url:   `/assets/${char.id}/${region.mask}`,
+    hint:       region.hint,
+    answer:     region.answer,
   }))
 );
 
-/** Returns a random subset of `count` questions (default 5). */
+/** Pick `count` random questions for a game set (default 5). */
 export function getRandomSet(count = 5) {
   const shuffled = [...ALL_QUESTIONS].sort(() => Math.random() - 0.5);
-  return shuffled.slice(0, count);
+  return shuffled.slice(0, Math.min(count, shuffled.length));
 }
